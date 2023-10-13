@@ -45,18 +45,47 @@ namespace pr{
             size_t size() const { return sz;}
             
             class iterator{
-
+                size_t index;
                 typedef buckets_t::iterator buckend; //itérateur positionné sur buckets.end()
-                typedef buckets_t::iterator vit; //itérateur sur la table de buckets 
+                typedef buckets_t::iterator vit; //buckets_t &buck : itérateur sur la table de buckets 
                 typedef std::forward_list<Entry>::iterator lit; //itérateur sur la liste qui pointe l'élément cur de la liste
-                
+                public:
                 //cstor :
-                iterator():{}
+                iterator(buckets_t::iterator buckend,buckets_t::iterator vit, std::forward_list<Entry>::iterator lit)
+                :buckend(buckend), vit(vit), lit(lit){}
+                
+                iterator & operator++() {
+                    lit++ //on incrémente la liste
+                    if(lit==vit->end()) // buck[index].end() si on arrive à la fin de la liste
+                        vit++; //index++ on passe passe au bucket suivant
+                        while(vit->empty && vit!= buckend){ //for(;index < buck.size() && buck[index]empty(); ++index)
+                            vit++; //nop
+                        }
+                        if (vit != buckend){ //if index<buck.size()   lit = buck[index].begin();
+                            lit = vit->begin();
+                        }
+                        //return *this;
+                }
+                bool operator!=(const iterator &other){
+                    return index!= other.index || lit != other.lit || &buck != &other.buck;
+                }
+                Entry & operator* (){
+                    return *lit;
+                }
 
-                iterator & operator++() {}
-                bool operator!=(const iterator &other)
-                Entry & operator* (){}
-            }
+                iterator begin(){
+                    //on cherche le premier bucket non vide :
+                    for(size_t i =0; i<buckets_t.size(); i++){
+                        if(!buckets[i].empty())
+                            return iterator(i, buckets[i].begin(), buckets);
+                    }
+                    return end();
+                }
+                iterator end(){
+                    return iterator(bucket_size(), buckets[0].end(),buckets)
+                }
+                      
+            };
             
     };
     
