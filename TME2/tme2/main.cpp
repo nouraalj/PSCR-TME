@@ -5,13 +5,15 @@
 #include <vector>
 #include "HashMap.hpp"
 
-int frequence_mot(){
+using namespace std;
+using namespace pr;
+using namespace std::chrono;
+int frequence_mot(const string &mot, HashMap<string, int> &map){
 	return 0;
 }
 
 int main () {
-	using namespace std;
-	using namespace std::chrono;
+	
 
 	vector<pair <string, size_t>> vec;
 

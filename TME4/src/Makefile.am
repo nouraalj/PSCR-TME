@@ -14,11 +14,3 @@ AM_LDFLAGS = -pthread
 #cible_LDFLAGS = -pthread 
 
 tme4_SOURCES = Banque.h Banque.cpp Compte.h Compte.cpp main.cpp
-
-
-
-
-
-
-
-
