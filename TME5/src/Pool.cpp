@@ -3,11 +3,13 @@
 using namespace std;
 
 namespace pr {
+
     Pool::Pool(int qsize) : queue(qsize) {}
+    
     void poolWorker(Queue<Job> &queue){
         while(true){
             Job *j =queue.pop();
-            if (j=nullptr) break;
+            if (j==nullptr) break;
             j->run();
             delete j;
         }
@@ -29,7 +31,6 @@ namespace pr {
         for(auto &t: threads){
             t.join();
         }
-        threads.clear();
     }
     Pool::~Pool(){
         stop();

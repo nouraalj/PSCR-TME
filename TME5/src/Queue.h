@@ -3,7 +3,8 @@
 
 #include <cstdlib>
 #include <mutex>
-
+#include <cstring>
+#include <condition_variable>
 namespace pr {
 
 // MT safe version of the Queue, non blocking.
@@ -61,9 +62,9 @@ public:
 	}
 
 	void setBlocking(bool b){
-		unique_lock<std::mutex> l(m);
+		std::unique_lock<std::mutex> l(m);
 		isBlocking = b;
-		cv.notify_all;
+		cv.notify_all();
 	}
 	~Queue() {
 		// ?? lock a priori inutile, ne pas detruire si on travaille encore avec
