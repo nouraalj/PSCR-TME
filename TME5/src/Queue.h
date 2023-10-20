@@ -13,8 +13,9 @@ class Queue {
 	const size_t allocsize;
 	size_t begin;
 	size_t sz;
+	bool isBlocking =true;
 	mutable std::mutex m;
-
+	std::condition_variable cv; //condition_variable_any si on utilise recursive_mutex pour fct empty et full
 	// fonctions private, sans protection mutex
 	bool empty() const {
 		return sz == 0;
@@ -33,8 +34,11 @@ public:
 	}
 	T* pop() {
 		std::unique_lock<std::mutex> lg(m);
-		if (empty()) {
-			return nullptr;
+		while (empty() && isBlocking) {
+			cv.wait(lg);
+		}
+		if (full()){
+			cv.notify_all();
 		}
 		auto ret = tab[begin];
 		tab[begin] = nullptr;
@@ -44,12 +48,22 @@ public:
 	}
 	bool push(T* elt) {
 		std::unique_lock<std::mutex> lg(m);
-		if (full()) {
-			return false;
+		while (full() && isBlocking) {
+			cv.wait(lg);
+		}
+		if (empty()){
+			cv.notify_all();
 		}
 		tab[(begin + sz) % allocsize] = elt;
 		sz++;
+		
 		return true;
+	}
+
+	void setBlocking(bool b){
+		unique_lock<std::mutex> l(m);
+		isBlocking = b;
+		cv.notify_all;
 	}
 	~Queue() {
 		// ?? lock a priori inutile, ne pas detruire si on travaille encore avec
