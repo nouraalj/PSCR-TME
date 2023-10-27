@@ -112,7 +112,7 @@ class ColorPixelJob : public Job {
 	
 	public:
 		//cstor
-		ColorPixelJob(Barrier *b,int x, Scene &scene,const Scene::screen_t &screen,vector<Vec3D> &lights, Color* &pixels):b(b),x(x),scene(scene), screen(screen), lights(lights){}
+		ColorPixelJob(Barrier *b,int x, Scene &scene,const Scene::screen_t &screen,vector<Vec3D> &lights, Color* &pixels):b(b),x(x),scene(scene), screen(screen), lights(lights), pixels(pixels){}
 
 		//calcul du pixel
 		void run(){
@@ -168,9 +168,9 @@ int main () {
 
 	// Les couleurs des pixels dans l'image finale
 	Color * pixels = new Color[scene.getWidth() * scene.getHeight()];
-	pr::Pool pool(15);
+	pr::Pool pool(scene.getWidth());
 	Barrier b(scene.getWidth());
-	pool.start(8);
+	pool.start(3);
 	// pour chaque pixel, calculer sa couleur
 	for (int x =0 ; x < scene.getWidth() ; x++) {			
 			/*// le point de l'ecran par lequel passe ce rayon

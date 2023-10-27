@@ -62,7 +62,7 @@ namespace pr
             typename std::forward_list<Entry>::Iterator lit; // itérateur sur la liste qui pointe l'élément cur de la liste
         public:
             // cstor :
-            Iterator(buckets_t::Iterator buckend, buckets_t::Iterator vit, std::forward_list<Entry>::Iterator lit)
+            Iterator(Iterator buckend, Iterator vit, forward_list<Entry>::Iterator lit)
                 : buckend(buckend), vit(vit), lit(lit) {}
 
             Iterator &operator++()

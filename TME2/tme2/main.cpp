@@ -59,12 +59,12 @@ int main () {
 				// on affiche un mot "propre" sur 100
 					cout << nombre_lu << ": "<< word << endl;
 				nombre_lu++;
-		}
-		*/
+		}*/
+		
 		// word est maintenant "tout propre"
-		if (nombre_lu % 100 == 0)
+		/*if (nombre_lu % 100 == 0)
 		// on affiche un mot "propre" sur 100
-			cout << nombre_lu << ": "<< word << endl;
+			cout << nombre_lu << ": "<< word << endl;*/
 		nombre_lu++;
 	}
 			
