@@ -20,7 +20,7 @@ public :
 		memset(tab,0,sizeof tab) ;
 		sem_init(&semMutex, 1, 1);
 		sem_init(&semPush,1, STACKSIZE);
-		sem_init(&semPop, 1, STACKSIZE);
+		sem_init(&semPop, 1, 0);
 		}
 
 	~Stack(){
@@ -31,14 +31,21 @@ public :
 
 	T pop () {
 		// bloquer si vide
-		sem_wait()
+		sem_wait(&semPop);
+		sem_wait(&semMutex);
 		T toret = tab[--sz];
+		sem_post(&semMutex);
+		sem_post(&semPush);
 		return toret;
 	}
 
 	void push(T elt) {
 		//bloquer si plein
+		sem_wait(&semPush);
+		sem_wait(&semMutex);
 		tab[sz++] = elt;
+		sem_post(&semMutex);
+		sem_post(&semPop);
 	}
 };
 
