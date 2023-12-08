@@ -4,6 +4,8 @@
 #include <sys/wait.h>
 #include <vector>
 
+#define N 3
+#define M 5
 
 using namespace std;
 using namespace pr;
@@ -29,7 +31,7 @@ int main () {
 		perror("mmap anonymous");
 		exit(1);
 	}
-	Stack<char> * s = new Stack<char>();
+	Stack<char> * s = new (addr) Stack<char>(); //on place la stack dans la mémoire partagée
 	pid_t pp = fork();
 	if (pp==0) {
 		producteur(s);
@@ -43,9 +45,17 @@ int main () {
 	}
 
 	wait(0);
-	wait(0);
 
-	delete s;
+	s->~Stack();
+	if(munmap(addr,sizeof(Stack<char>))!=0){
+		perror("munmap");
+		exit(1);
+	};
+
+	/*if (shm_unlink(/mon_shem) == -1) {
+        perror("shm_unlink");
+        exit(1);
+    }*/
 	return 0;
 }
 

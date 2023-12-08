@@ -20,7 +20,8 @@ int main(int argc, char *argv[]){
     char *chaine1[argc];
     char *chaine2[argc];
     int pos=-1;
-    for(int i =0; i<argc; i++){
+    int i;
+    for(i =0; i<argc; i++){
         if(!strcmp(argv[i], "|")){
             pos = i;
             break;
@@ -29,19 +30,17 @@ int main(int argc, char *argv[]){
         }
     }
     chaine1[i-1] = NULL;
+
+    if (pos == -1){
+        perror("pipe command");
+    }
+
     for(;i<argc;i++){
         chaine2[i-1] = argv[i]; //chaine après |
     }
     chaine2[i-1] =NULL;
     std::cout << chaine1 << std::endl;
     std::cout << chaine2 << std::endl;
-
-
-    /*char* buf1 = const_cast<char*>(arg1);
-    char* buf2 = const_cast<char*>(arg2);
-
-    memcpy(buf1, chaine1, sizeof(chaine1));
-    memcpy(buf2, chaine2, sizeof(chaine2));*/
 
     pid_t pid_fils;
     if ( (pid_fils = fork ( )) == -1 ){

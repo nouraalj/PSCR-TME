@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstring> // size_t,memset
-#include <semaphore>
+#include <semaphore.h>
 #include <sys/mman.h>
 
 namespace pr {
