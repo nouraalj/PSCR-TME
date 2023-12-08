@@ -4,7 +4,7 @@
 
 using namespace std;
 
-namespace pr {
+using namespace pr;
 
 void Banque::transfert(size_t deb, size_t cred, unsigned int val) {
 	unique_lock<mutex> l(m); //Q9
@@ -57,5 +57,4 @@ void Banque::afficher() const
 			cout << "Compte " << id << " : " << compte.getSolde() << endl;
 			++id;
 		}
-	}
 }

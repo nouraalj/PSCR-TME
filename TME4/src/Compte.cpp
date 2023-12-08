@@ -1,5 +1,4 @@
 #include "Compte.h"
-
 using namespace std;
 
 namespace pr {
@@ -9,7 +8,7 @@ void Compte::crediter (unsigned int val) {
 }
 bool Compte::debiter (unsigned int val) {
 	unique_lock<recursive_mutex> g(m);
-	bool doit = solde >= val;
+	bool doit = (solde >= val);
 	if (doit) {
 		solde-=val ;
 	}
