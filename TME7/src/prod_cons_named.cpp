@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <vector>
 
 #define N 3
@@ -13,6 +14,12 @@
 using namespace std;
 using namespace pr;
 
+void handler(int sig){
+    if (sig == SIGINT){
+        cout << "Received Ctrl-C, consumer" << getpid() <<  "stopped" << endl;
+        kill(getpid(), SIGTERM);
+    }
+}
 void producteur (Stack<char> * stack) {
 	char c ;
 	while (cin.get(c)) {
@@ -30,6 +37,16 @@ void consomateur (Stack<char> * stack) {
 }
 
 int main () {
+    //mise en place du gestionnaire de signal :
+    struct sigaction sa;
+    sigset_t mask;
+    sigfillset(&mask);
+    sigdelset(&mask, SIGINT);
+    sa.sa_handler = &handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    sigaction(SIGINT, &sa, NULL);
+
 	//créer le segment de mémoire partagée
 	int shm_fd = shm_open("/myshm", O_CREAT | O_EXCL | O_RDWR, 0666);
     if (shm_fd == -1) {
@@ -76,15 +93,14 @@ int main () {
         consumers.emplace_back(pc);
     }
 
-    //on termine tous les proc avec Ctrl-C
-    for (pid_t pp : producers) {
-        kill(pp, SIGINT);
+    for(pid_t pid :producers){
+        waitpid(pid, NULL, 0);
     }
 
-    for (pid_t pc : consumers) {
-        kill(pc, SIGINT);
+    for(pid_t pid : consumers){
+        waitpid(pid, NULL, 0);
     }
-
+    
 	s->~Stack();
 	if(munmap(addr,sizeof(Stack<char>))!=0){
 		perror("munmap");

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
 #include <vector>
 
 #define N 3
@@ -9,6 +10,13 @@
 
 using namespace std;
 using namespace pr;
+
+void handler(int sig){
+    if (sig == SIGINT){
+        cout << "Received Ctrl-C, consumer " << getpid() <<  " stopped" << endl;
+        kill(getpid(), SIGTERM);
+    }
+}
 
 void producteur (Stack<char> * stack) {
 	char c ;
@@ -25,7 +33,17 @@ void consomateur (Stack<char> * stack) {
 }
 
 int main () {
-	
+
+	//mise en place du gestionnaire de signal :
+    struct sigaction sa;
+    sigset_t mask;
+    sigfillset(&mask);
+    sigdelset(&mask, SIGINT);
+    sa.sa_handler = &handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    sigaction(SIGINT, &sa, NULL);
+
 	void* addr = mmap(NULL, sizeof(Stack<char>), PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_SHARED,-1,0);
 	if (addr == MAP_FAILED){
 		perror("mmap anonymous");
@@ -51,11 +69,7 @@ int main () {
 		perror("munmap");
 		exit(1);
 	};
-
-	/*if (shm_unlink(/mon_shem) == -1) {
-        perror("shm_unlink");
-        exit(1);
-    }*/
+	
 	return 0;
 }
 

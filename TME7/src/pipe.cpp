@@ -7,7 +7,7 @@
 
 void myexec(int argc, char **argv){
     std::cout << "argument de l'execv :" << std::endl;
-    for(int i=0; argv[i]; i++){
+    for(int i=0; i<argc; i++){
         std::cout << "i" << argv[i] << std::endl;
     }
     if (execv(argv[0], argv) == -1){

@@ -1,4 +1,3 @@
-#pragma once
 
 #include <cstring> // size_t,memset
 #include <semaphore.h>
