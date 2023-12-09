@@ -3,6 +3,13 @@
 #include <vector>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <cstdlib>
+#include <ctime>
+#include <cstring>
+
 #include "rsleep.cpp"
 
 int pv = 3;
@@ -31,7 +38,9 @@ void attaque (pid_t adversaire) {
 }
 
 void defense() {
-    signal(SIGINT, SIG_IGN);
+    struct sigaction sa = {0};
+    sa.sa_handler = SIG_IGN ;
+    sigaction(SIGINT, &sa, NULL);
     randsleep();
 }
 
@@ -44,11 +53,15 @@ void combat(pid_t adversaire) {
 
 int main() {
     pid_t vador = getpid(); //père
-    pid_t luke = fork(); //fils
-    std::cout << "Dark Vador est : " << vador << std::endl;
-    std::cout << "Luke est : " << luke << std::endl;
-    if (luke == 0) {
+    std::cout << "Vador " << vador <<" : 'Je suis ton père..'" << std::endl;
+    pid_t luke = fork(); // Fils
+    std::cout << "Luke "<< luke <<  " : 'NOOOOOON' " << std::endl;
+    if (luke != 0) {
+        combat(luke);
+    } else {
         combat(vador);
-    } else combat(luke);
+    }
+   
+
     return 0;
 }

@@ -16,4 +16,3 @@ main pid=10971
  On a 10 processus au total
 
 ### Q2 - 
- rgnjrngre
