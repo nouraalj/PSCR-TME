@@ -2,7 +2,7 @@
 
 ### Q1 -
 **Affichage obtenu :**  
-main pid=10971
+main pid=10971  
  i:j 1:3  
  k:j 1:0  
  i:j 2:3  
@@ -15,5 +15,5 @@ main pid=10971
 
  On a 10 processus au total
 
- ### Q2 -  
+### Q2 - 
  rgnjrngre
