@@ -14,7 +14,7 @@ void transaction(int index, pr::Banque &b){
             b.transfert(i,j,m);
             //std::this_thread::sleep_for(std::chrono::milliseconds(rand()%21)); 
         }
-		std::cout << "finished "<< index << endl;
+		//std::cout << "finished "<< index << endl;
 }
 
 int main () {
@@ -22,12 +22,13 @@ int main () {
 	vector<thread> comptables;
 
 	// TODO : creer des threads qui font ce qui est demandé
+	
 	threads.reserve(NB_THREAD);
 	pr::Banque b(NB_COMPTES, SOLDEINITIAL);
 	b.afficher();
     for(int i=0; i<NB_THREAD; i++){
 		threads.emplace_back(transaction, i, ref(b));
-		std::cout << "created "<< i << endl;
+		//std::cout << "created "<< i << endl;
 		comptables.emplace_back(&pr::Banque::comptabiliser, ref(b), b.size()*SOLDEINITIAL);
 	}
 	b.comptabiliser(b.size() * SOLDEINITIAL);

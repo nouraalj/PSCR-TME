@@ -7,10 +7,10 @@ using namespace std;
 using namespace pr;
 
 void Banque::transfert(size_t deb, size_t cred, unsigned int val) {
-	unique_lock<mutex> l(m); //Q9
+	unique_lock<recursive_mutex> l(m); //Q9
 	Compte & debiteur = comptes[deb];
 	Compte & crediteur = comptes[cred];
-	/* Q6 if (deb<cred){
+	if (deb<cred){
 		debiteur.lock();
 		crediteur.lock();
 	}
@@ -21,7 +21,7 @@ void Banque::transfert(size_t deb, size_t cred, unsigned int val) {
 		else{
 		//deb=cred => meme compte, on ne transfère rien
 		return;
-	}*/
+	}
 	if (debiteur.debiter(val)) {
 		crediteur.crediter(val);
 	}
@@ -29,11 +29,11 @@ void Banque::transfert(size_t deb, size_t cred, unsigned int val) {
 	crediteur.unlock();
 }
 size_t Banque::size() const {
-	unique_lock<mutex> l(m);
+	unique_lock<recursive_mutex> l(m);
 	return comptes.size();
 }
 bool Banque::comptabiliser (int attendu) const {
-	unique_lock<mutex> l(m);
+	unique_lock<recursive_mutex> l(m);
 	int bilan = 0;
 	int id = 0;
 	for (const auto & compte : comptes) {
@@ -45,6 +45,9 @@ bool Banque::comptabiliser (int attendu) const {
 	}
 	if (bilan != attendu) {
 		cout << "Bilan comptable faux : attendu " << attendu << " obtenu : " << bilan << endl;
+	}
+	else if (bilan == attendu){
+		cout << "bilan ok !" << endl;
 	}
 	return bilan == attendu;
 }

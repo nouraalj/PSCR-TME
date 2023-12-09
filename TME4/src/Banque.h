@@ -7,7 +7,7 @@
 namespace pr {
 
 class Banque {
-	mutable std::mutex m;
+	mutable std::recursive_mutex m;
 	typedef std::vector<Compte> comptes_t;
 	comptes_t comptes;
 
@@ -20,4 +20,4 @@ public :
 	void afficher() const;
 };
 
-}
+};

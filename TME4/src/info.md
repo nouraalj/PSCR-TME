@@ -14,3 +14,10 @@ Dead-lock ou interblocage des threads. Pour empêcher cela, on impose un ordre d
 
 ### Q7 :
 
+
+
+## Q8 : 
+Sans mutex pour protéger les executions des threads comptables, on obtient toujours un bilan comptable faux
+
+## Q10 :
+Il faut stocker dans un liste l'ensemble des comptes dans un vector. Lorsque le comptable aura vu ce compte on l'enlève de la liste pour que le thread de transfert ne puisse plus y accéder. 
