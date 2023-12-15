@@ -50,3 +50,8 @@ Socket ServerSocket::accept()
     // std::cout<< "connection de " << &exp << std::endl;
     return Socket(sc);
 }
+
+
+void ServerSocket::close() {
+    ::close(socketfd);
+}

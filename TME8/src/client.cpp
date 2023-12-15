@@ -4,7 +4,7 @@
 #include <string>
 
 
-/*int main0() {
+int main() {
 	pr::Socket sock;
 	sock.connect("localhost", 1664);
 	int N=42;
@@ -14,10 +14,9 @@
 	sock.close();
 	return 0;
 }
-*/
 
 
-//avec controle
+/*
 int main() {
 
     pr::Socket sock;
@@ -44,7 +43,7 @@ int main() {
 
     return 0;
 }
-
+*/
 
 
 /*
@@ -81,4 +80,5 @@ int main() {
 
 	return 0;
 }
+
 */
